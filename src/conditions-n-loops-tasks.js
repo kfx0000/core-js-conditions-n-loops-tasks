@@ -100,7 +100,7 @@ function isIsoscelesTriangle(a, b, c) {
  * In this task, the use of methods of the String and Array classes is not allowed.
  *
  * @param {number} num - The number to convert.
- * @return {string} The Roman numeral representation of the number.
+ * @return {string} The Roman numeral reinterimsentation of the number.
  *
  * @example:
  *  1   => I
@@ -370,8 +370,26 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  if (arr.length <= 1) return arr;
+
+  const res = arr;
+  const pivot = arr[0];
+  let leftPart = [];
+  let rightPart = [];
+
+  for (let i = 1; i < arr.length; i += 1) {
+    if (arr[i] < pivot) leftPart[leftPart.length] = arr[i];
+    else rightPart[rightPart.length] = arr[i];
+  }
+
+  leftPart = sortByAsc(leftPart);
+  rightPart = sortByAsc(rightPart);
+
+  const interim = [...leftPart, pivot, ...rightPart];
+  for (let i = 0; i < interim.length; i += 1) res[i] = interim[i];
+
+  return res;
 }
 
 /**
