@@ -372,23 +372,18 @@ function rotateMatrix(matrix) {
  */
 function sortByAsc(arr) {
   if (arr.length <= 1) return arr;
-
   const res = arr;
   const pivot = arr[0];
   let leftPart = [];
   let rightPart = [];
-
   for (let i = 1; i < arr.length; i += 1) {
     if (arr[i] < pivot) leftPart[leftPart.length] = arr[i];
     else rightPart[rightPart.length] = arr[i];
   }
-
   leftPart = sortByAsc(leftPart);
   rightPart = sortByAsc(rightPart);
-
   const interim = [...leftPart, pivot, ...rightPart];
   for (let i = 0; i < interim.length; i += 1) res[i] = interim[i];
-
   return res;
 }
 
@@ -411,11 +406,11 @@ function sortByAsc(arr) {
  */
 function shuffleChar(str, iterations) {
   let res = str;
-  for (let i = 0; i < iterations; i += 1) {
+  for (let i = 1; i <= iterations; i += 1) {
     const arr = ['', ''];
     for (let j = 0; j < res.length; j += 1) arr[j % 2] += res[j];
     res = arr[0] + arr[1];
-    if (res === str) return shuffleChar(str, iterations % (i + 1));
+    if (res === str) return shuffleChar(str, iterations % i);
   }
   return res;
 }
@@ -437,8 +432,24 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const arrNum = Array.from(`${number}`, (x) => +x);
+  for (let i = arrNum.length - 1; i >= 0; i -= 1) {
+    if (arrNum[i - 1] < arrNum[i]) {
+      let min = arrNum[i];
+      for (let j = i; j < arrNum.length; j += 1)
+        if (arrNum[j] > arrNum[i - 1] && arrNum[j] < min) min = arrNum[j];
+      let chg;
+      for (let j = 0; j < arrNum.length; j += 1) if (arrNum[j] === min) chg = j;
+      const tmp = arrNum[chg];
+      arrNum[chg] = arrNum[i - 1];
+      arrNum[i - 1] = tmp;
+      const right = arrNum.splice(i).sort().join('');
+      const left = arrNum.join('');
+      return +(left + right);
+    }
+  }
+  return number;
 }
 
 module.exports = {
